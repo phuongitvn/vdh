@@ -67,8 +67,8 @@ var insertArticleUrls = function(db, arrayData, callback) {
     assert.equal(3, result.result.n);
     assert.equal(3, result.ops.length);
     console.log("Inserted 3 documents into the document collection");
-	console.log('result.ops.length:'+result.ops.length);
-	console.log('result.result.n:'+result.result.n);
+	//console.log('result.ops.length:'+result.ops.length);
+	//console.log('result.result.n:'+result.result.n);
     callback(result);
   });
 }
