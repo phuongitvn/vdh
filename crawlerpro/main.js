@@ -41,7 +41,8 @@ function ConnDB()
 	  , assert = require('assert');
 
 		// Connection URL
-		var url = 'mongodb://52.11.98.62:27017/fan2clip';
+		//var url = 'mongodb://52.11.98.62:27017/fan2clip';
+		var url = 'mongodb://admin:admin@123@52.11.98.62:27017/fan2clip'
 		console.log(url);
 		// Use connect method to connect to the Server
 		MongoClient.connect(url, function(err, db) {
