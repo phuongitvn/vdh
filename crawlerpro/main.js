@@ -1,7 +1,8 @@
 var Crawler = require('crawler');
 var slug    = require('slug');
 var async   = require('async');
-
+var MongoClient = require('mongodb').MongoClient
+	  , assert = require('assert');
 
 try{
 	var c = new Crawler({
@@ -37,8 +38,7 @@ try{
 function ConnDB()
 {
 	try{
-		var MongoClient = require('mongodb').MongoClient
-	  , assert = require('assert');
+		
 
 		// Connection URL
 		//var url = 'mongodb://52.11.98.62:27017/fan2clip';
