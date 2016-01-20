@@ -11,6 +11,7 @@ try{
             'callback': function (error, result, $) {
             }
         });
+		var url = 'mongodb://phuongnv:123456@localhost:27017/vandieuhay'
 		MongoClient.connect(url, function(err, db) {
 			assert.equal(null, err);
 			console.log("Connected correctly to server");
