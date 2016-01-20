@@ -11,25 +11,31 @@ try{
             'callback': function (error, result, $) {
             }
         });
-		c.queue([{
-            'uri': 'http://suckhoe.vnexpress.net/tin-tuc/khoe-dep',
-            'callback': function (error, result, $) {
-                var li = $('#news_home').children();
-                var data = [];
-                var obj = {};
-                for(var i=0;i<li.length;i++){
-					var item = $(li).eq(i);
-					obj = {};
-					obj.title = item.find('h2.title_news a').text();
-					obj.url = item.find('h2.title_news a').attr('href');
-					obj.thumb_url = item.find('.thumb img').attr('src');
-					obj.intro_text = item.find('.news_lead').text();
-					data.push(obj);
-					InsertDB(obj);
-                }
-                console.log(data);				
-            }
-        }]);
+		MongoClient.connect(url, function(err, db) {
+			assert.equal(null, err);
+			console.log("Connected correctly to server");
+			
+			c.queue([{
+				'uri': 'http://suckhoe.vnexpress.net/tin-tuc/khoe-dep',
+				'callback': function (error, result, $) {
+					var li = $('#news_home').children();
+					var data = [];
+					var obj = {};
+					for(var i=0;i<li.length;i++){
+						var item = $(li).eq(i);
+						obj = {};
+						obj.title = item.find('h2.title_news a').text();
+						obj.url = item.find('h2.title_news a').attr('href');
+						obj.thumb_url = item.find('.thumb img').attr('src');
+						obj.intro_text = item.find('.news_lead').text();
+						data.push(obj);
+						insertArticleUrls(db, obj);
+					}
+					console.log(data);				
+				}
+			}]);
+			db.close();
+		});
 }catch(e)
 {
 	console.log(e);
