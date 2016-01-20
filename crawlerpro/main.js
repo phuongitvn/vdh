@@ -11,38 +11,31 @@ try{
             'callback': function (error, result, $) {
             }
         });
-		var url = 'mongodb://phuongnv:123456@localhost:27017/vandieuhay'
-		MongoClient.connect(url, function(err, db) {
-			assert.equal(null, err);
-			console.log("Connected correctly to server");
-			
-			c.queue([{
-				'uri': 'http://suckhoe.vnexpress.net/tin-tuc/khoe-dep',
-				'callback': function (error, result, $) {
-					var li = $('#news_home').children();
-					var data = [];
-					var obj = {};
-					for(var i=0;i<li.length;i++){
-						var item = $(li).eq(i);
-						obj = {};
-						obj.title = item.find('h2.title_news a').text();
-						obj.url = item.find('h2.title_news a').attr('href');
-						obj.thumb_url = item.find('.thumb img').attr('src');
-						obj.intro_text = item.find('.news_lead').text();
-						data.push(obj);
-						insertArticleUrls(db, obj);
-					}
-					console.log(data);				
-				}
-			}]);
-			db.close();
-		});
+		c.queue([{
+            'uri': 'http://suckhoe.vnexpress.net/tin-tuc/khoe-dep',
+            'callback': function (error, result, $) {
+                var li = $('#news_home').children();
+                var data = [];
+                var obj = {};
+                for(var i=0;i<li.length;i++){
+					var item = $(li).eq(i);
+					obj = {};
+					obj.title = item.find('h2.title_news a').text();
+					obj.url = item.find('h2.title_news a').attr('href');
+					obj.thumb_url = item.find('.thumb img').attr('src');
+					obj.intro_text = item.find('.news_lead').text();
+					data.push(obj);
+                }
+                console.log(data);
+				InsertDB(data);
+            }
+        }]);
 }catch(e)
 {
 	console.log(e);
 }
 
-function InsertDB(obj)
+function InsertDB(data)
 {
 	try{
 		
@@ -55,7 +48,7 @@ function InsertDB(obj)
 		MongoClient.connect(url, function(err, db) {
 			assert.equal(null, err);
 			console.log("Connected correctly to server");
-			insertArticleUrls(db, obj, function() {
+			insertArticleUrls(db, data, function() {
 				db.close();
 			});
 		});
@@ -65,18 +58,11 @@ function InsertDB(obj)
 	}
 }
 
-var insertArticleUrls = function(db, objData, callback) {
+var insertArticleUrls = function(db, arrayData, callback) {
   // Get the documents collection
   var collection = db.collection('article_urls');
   // Insert some documents
-  collection.insertMany([
-    {
-		title 		: objData.title,
-		url			: objData.url,
-		thumb_url	: objData.thumb_url,
-		intro_text	: objData.intro_text
-	}
-  ], function(err, result) {
+  collection.insertMany(arrayData, function(err, result) {
     assert.equal(err, null);
     assert.equal(3, result.result.n);
     assert.equal(3, result.ops.length);
