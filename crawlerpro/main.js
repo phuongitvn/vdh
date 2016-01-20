@@ -46,12 +46,11 @@ function ConnDB()
 		console.log(url);
 		// Use connect method to connect to the Server
 		MongoClient.connect(url, function(err, db) {
-		  assert.equal(null, err);
-		  console.log("Connected correctly to server");
+			assert.equal(null, err);
+			console.log("Connected correctly to server");
 			insertDocuments(db, function() {
 				db.close();
-			  });
-		  db.close();
+			});
 		});
 	}catch(e)
 	{
