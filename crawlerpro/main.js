@@ -25,9 +25,9 @@ try{
 					obj.thumb_url = item.find('.thumb img').attr('src');
 					obj.intro_text = item.find('.news_lead').text();
 					data.push(obj);
+					InsertDB(obj);
                 }
-                console.log(data);
-				ConnDB();
+                console.log(data);				
             }
         }]);
 }catch(e)
@@ -35,7 +35,7 @@ try{
 	console.log(e);
 }
 
-function ConnDB()
+function InsertDB(obj)
 {
 	try{
 		
@@ -48,7 +48,7 @@ function ConnDB()
 		MongoClient.connect(url, function(err, db) {
 			assert.equal(null, err);
 			console.log("Connected correctly to server");
-			insertDocuments(db, function() {
+			insertArticleUrls(db, obj, function() {
 				db.close();
 			});
 		});
@@ -58,17 +58,24 @@ function ConnDB()
 	}
 }
 
-var insertDocuments = function(db, callback) {
+var insertArticleUrls = function(db, objData, callback) {
   // Get the documents collection
   var collection = db.collection('article_urls');
   // Insert some documents
   collection.insertMany([
-    {a : 1}, {a : 2}, {a : 3}
+    {
+		title 		: objData.title,
+		url			: objData.url,
+		thumb_url	: objData.thumb_url,
+		intro_text	: objData.intro_text
+	}
   ], function(err, result) {
     assert.equal(err, null);
     assert.equal(3, result.result.n);
     assert.equal(3, result.ops.length);
     console.log("Inserted 3 documents into the document collection");
+	console.log('result.ops.length:'+result.ops.length);
+	console.log('result.result.n:'+result.result.n);
     callback(result);
   });
 }
