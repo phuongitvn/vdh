@@ -42,7 +42,7 @@ function ConnDB()
 
 		// Connection URL
 		//var url = 'mongodb://52.11.98.62:27017/fan2clip';
-		var url = 'mongodb://phuongnv:123456@52.11.98.62:27017/vandieuhay'
+		var url = 'mongodb://phuongnv:123456@localhost:27017/vandieuhay'
 		console.log(url);
 		// Use connect method to connect to the Server
 		MongoClient.connect(url, function(err, db) {
