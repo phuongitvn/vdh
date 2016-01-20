@@ -1,0 +1,17 @@
+{
+  "name": "crawlerpro",
+  "version": "0.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "phuong.nguyen.itvn@gmail.com",
+  "license": "BSD",
+  "dependencies": {
+    "crawler": "~0.4.3",
+    "mongodb": "~2.1.4",
+    "slug": "~0.9.1",
+    "async": "~1.5.2"
+  }
+}
